@@ -22,7 +22,7 @@ public class Main {
             else {
                 ans++;
                 lt++;
-                rt--;
+
             }
         }
         System.out.println(ans);
