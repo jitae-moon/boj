@@ -2,58 +2,54 @@
 import java.util.*;
 
 public class Main {
-    static int[][] board;
-    static int[][] visited;
-    static int[][] distance;
     static int n, m;
+    static int[][] board;
+    static int[][] dis;
     static int[] dx = {-1, 0, 1, 0};
     static int[] dy = {0, 1, 0, -1};
 
-    static int bfs(int x, int y) {
-        int max = 0;
+
+    static void bfs(Pair pair) {
         Queue<Pair> queue = new LinkedList<>();
-        queue.offer(new Pair(x, y));
-        visited[x][y] = 1;
-        distance[x][y] = 1;
+        queue.offer(pair);
         while (!queue.isEmpty()) {
-            Pair cur = queue.poll();
-            x = cur.x;
-            y = cur.y;
-
-            for (int i = 0; i < 4; i++) {
-                int nx = x + dx[i];
-                int ny = y + dy[i];
-
-                if (nx < 0 || nx > n || ny < 0 || ny > m) continue;
-
-                if (board[nx][ny] == 1 && visited[nx][ny] == 0) {
-                    queue.offer(new Pair(nx, ny));
-                    visited[nx][ny] = 1;
-                    distance[nx][ny] = distance[x][y] + 1;
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                Pair cur = queue.poll();
+                int x = cur.x;
+                int y = cur.y;
+                for (int j = 0; j < 4; j++) {
+                    int nx = x + dx[j];
+                    int ny = y + dy[j];
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < m && board[nx][ny] == 1) {
+                        board[nx][ny] = 0;
+                        dis[nx][ny] = dis[x][y] + 1;
+                        queue.offer(new Pair(nx, ny));
+                    }
                 }
             }
+
         }
-        return distance[n][m];
     }
-
-
-
-
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         n = sc.nextInt();
         m = sc.nextInt();
-        board = new int[n + 1][m + 1];
-        visited = new int[n + 1][m + 1];
-        distance = new int[n + 1][m + 1];
-        for (int i = 1; i <= n; i++) {
-            String tmp = sc.next();
-            for (int j = 1; j <= m; j++) board[i][j] = tmp.charAt(j-1) - '0';
-        }
+        board = new int[n][m];
+        dis = new int[n][m];
+        sc.nextLine();
 
-        int ans = bfs(1, 1);
-        System.out.println(ans);
+        for (int i = 0; i < n; i++) {
+            String tmp = sc.nextLine();
+            for (int j = 0; j < m; j++) {
+                board[i][j] = tmp.toCharArray()[j] - '0';
+            }
+        }
+        board[0][0] = 1;
+        dis[0][0] = 1;
+        bfs(new Pair(0, 0));
+        System.out.println(dis[n-1][m-1]);
 
     }
 }
@@ -62,7 +58,7 @@ class Pair {
     int x;
     int y;
 
-    Pair(int x, int y) {
+    public Pair(int x, int y) {
         this.x = x;
         this.y = y;
     }
