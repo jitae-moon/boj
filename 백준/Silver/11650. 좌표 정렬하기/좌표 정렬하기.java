@@ -22,11 +22,9 @@ public class Main {
         }
         Collections.sort(list);
         for (Point p : list) {
-            System.out.print(p);
-            System.out.println();
+            bw.write(p + "\n");
         }
-
-
+        bw.flush();
     }
 }
 
