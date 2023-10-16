@@ -1,38 +1,32 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
-public class Main {
-    static int n, k;
-    static int ans;
-    static List<Integer> coins;
+class Main {
 
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        int[] coins = new int[n];
 
-        String[] strArr = br.readLine().split(" ");
-        n = Integer.parseInt(strArr[0]);
-        k = Integer.parseInt(strArr[1]);
-        coins = new ArrayList<>();
-        ans = 0;
-
-        for (int i = 0; i < n; i++) {
-            int tmp = Integer.parseInt(br.readLine());
-            if (tmp <= k) {
-                coins.add(tmp);
-            }
+        for (int i = n - 1; i >= 0; i--) {
+            coins[i] = sc.nextInt();
         }
-        Collections.sort(coins, Collections.reverseOrder());
 
-        int sum = 0;
-        for (int i = 0; i < coins.size(); i++) {
-            while (k >= coins.get(i)) {
-                k -= coins.get(i);
-                ans++;
+        int ans = 0;
+        while (true) {
+            for (int coin : coins) {
+                if (k >= coin) {
+                    int cnt = k / coin;
+                    ans += cnt;
+                    k = k - cnt * coin;
+                }
             }
+            if (k == 0) break;
         }
+
         System.out.println(ans);
     }
+
 }
